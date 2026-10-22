@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nidoo Hub · Tu hogar inteligente</title>
+<style>
+:root{--bg:#f5f8fc;--card:#fff;--ink:#1c2740;--mut:#5b6784;--pri:#3468d6;--pri2:#2551b0;--line:#e1e8f3;--soft:#eaf0fb;--on:#2fb36d;--warn:#e0902a;--bad:#d9534f;--btn-ink:#fff;--hero:#e9f0fb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#10151f;--card:#18202f;--ink:#e8edf7;--mut:#a3aec6;--line:#27324a;--soft:#1f2b45;--pri:#5b8cf0;--pri2:#8db0ff;--btn-ink:#0c1220;--hero:#16203a}}
+:root[data-theme=dark]{--bg:#10151f;--card:#18202f;--ink:#e8edf7;--mut:#a3aec6;--line:#27324a;--soft:#1f2b45;--pri:#5b8cf0;--pri2:#8db0ff;--btn-ink:#0c1220;--hero:#16203a}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--card);border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.logo{font-weight:800;font-size:1.15rem;color:var(--pri)}
+nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;font-size:.92rem;color:var(--mut);overflow-x:auto;white-space:nowrap}
+nav ul a:hover{color:var(--pri)}
+.hero{padding:64px 0 48px;background:linear-gradient(180deg,var(--hero),var(--bg))}
+.hero .wrap,.two,.demo{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
+.tag{display:inline-block;background:var(--soft);color:var(--pri2);padding:4px 12px;border-radius:99px;font-size:.8rem;font-weight:600}
+h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.15;margin:14px 0}
+.hero p{color:var(--mut);font-size:1.08rem;max-width:480px}
+.btn{display:inline-block;margin:10px 8px 0 0;background:var(--pri);color:var(--btn-ink);padding:12px 24px;border-radius:12px;font-weight:600;border:0}
+.btn:hover{background:var(--pri2)}.btn.sec{background:var(--soft);color:var(--pri2)}
+svg.ill{width:100%;height:auto;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+section{padding:56px 0}h2{font-size:1.8rem;margin:0 0 14px}
+.lead{color:var(--mut);max-width:720px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:24px}
+.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.card h3{margin:0 0 8px;font-size:1.05rem;color:var(--pri2)}
+.card ul{margin:0;padding-left:18px;color:var(--mut)}
+.alt{background:var(--card);border-block:1px solid var(--line)}
+.result{margin-top:24px;background:var(--pri);color:var(--btn-ink);border-radius:18px;padding:24px;font-size:1.15rem;font-weight:600;text-align:center}
+.team{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.team span{background:var(--soft);padding:6px 14px;border-radius:99px;font-size:.9rem}
+.demo{grid-template-columns:1.2fr 1fr;align-items:start;margin-top:24px}
+.panel{border-radius:22px;padding:20px}.panel h3{margin:0 0 12px;font-size:1rem}
+.status{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--on);margin-bottom:14px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--on)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{position:relative;display:flex;flex-direction:column;gap:6px;text-align:left;background:var(--bg);border:2px solid var(--line);border-radius:16px;padding:14px;color:var(--ink);transition:.15s}
+.tile .ic{width:36px;height:36px;border-radius:50%;background:#c3cad8;display:grid;place-items:center;font-size:1.1rem}
+.tile small{color:var(--mut)}.tile .x{position:absolute;top:8px;right:10px;color:var(--mut);font-size:.85rem;padding:2px 5px}
+.tile[aria-pressed=true]{border-color:var(--on);background:var(--card)}
+.tile[aria-pressed=true] .ic{background:#ffc546;box-shadow:0 0 14px #ffc54699}
+.tile[aria-pressed=true] small{color:var(--on)}
+.temp{margin-top:16px;background:var(--pri);color:var(--btn-ink);border-radius:16px;padding:16px}
+.temp .v{font-size:2rem;font-weight:800}.temp.hot{background:var(--bad)}
+input[type=range]{width:100%;accent-color:#fff}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{background:var(--soft);color:var(--pri2);border:0;border-radius:99px;padding:8px 14px;font-size:.88rem;font-weight:600}
+.chip:hover{background:var(--pri);color:var(--btn-ink)}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:.92rem}
+.sw input{width:42px;height:22px;accent-color:var(--pri)}
+.stat{display:flex;justify-content:space-between;font-size:.9rem;color:var(--mut);padding:6px 0}.stat b{color:var(--ink)}
+#log{list-style:none;margin:0;padding:0;max-height:170px;overflow:auto;font-size:.85rem;color:var(--mut)}
+#log li{padding:5px 0;border-top:1px solid var(--line)}#log time{color:var(--pri2);font-weight:600;margin-right:6px}
+#toasts{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;z-index:50;max-width:calc(100vw - 32px)}
+.toast{background:#1c2740;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px #0004;font-size:.9rem}.toast.warn{background:var(--warn)}
+form{display:grid;gap:12px;max-width:520px;margin-top:18px}
+form.rf{display:flex;flex-wrap:wrap;gap:8px;max-width:none;margin:0}
+.rf input,.rf select{width:auto;flex:1 1 110px}
+label{font-size:.88rem;font-weight:600}
+input[type=text],input[type=email],input[type=number],input[type=time],textarea,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit}
+.err{color:var(--bad);font-size:.8rem;min-height:1em}
+.rl{list-style:none;margin:10px 0 0;padding:0;font-size:.88rem;color:var(--mut)}
+.rl li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--line)}
+.rl button{background:none;border:0;color:var(--bad);font-weight:700}
+nav ul{flex:1;min-width:0}
+.acc{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.acc[hidden],#auth[hidden]{display:none}
+.chip.pri{background:var(--pri);color:var(--btn-ink)}.chip.pri:hover{background:var(--pri2)}
+.who{font-size:.85rem;color:var(--mut)}
+#auth{position:fixed;inset:0;z-index:40;background:#0008;display:grid;place-items:center;padding:20px}
+.box{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px}
+.box h2{font-size:1.4rem;margin:0 0 4px}.box p{color:var(--mut);margin:0 0 6px;font-size:.92rem}
+.box .btn{width:100%;margin:6px 0 0}
+.lnk{background:none;border:0;color:var(--pri2);font-weight:600;padding:0;text-decoration:underline}
+.sw2{text-align:center;font-size:.9rem;color:var(--mut);margin-top:14px}
+.bdg{background:var(--pri);color:var(--btn-ink);border-radius:99px;font-size:.72rem;padding:0 7px;margin-left:6px}
+.price{font-size:2.4rem;font-weight:800;color:var(--pri2);line-height:1;margin:10px 0 2px}
+.buy ul{padding-left:18px;color:var(--mut);margin:12px 0 8px}
+#cart,#co{position:fixed;inset:0;z-index:45;background:#0008}#cart[hidden],#co[hidden]{display:none}
+#cart .dr{position:absolute;right:0;top:0;bottom:0;width:min(400px,100%);background:var(--card);border-left:1px solid var(--line);padding:20px;overflow:auto;display:flex;flex-direction:column}
+#co{display:grid;place-items:center;padding:20px}#co .box{max-width:460px;max-height:calc(100dvh - 40px);overflow:auto}
+.ci{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-block:1px solid var(--line);margin-top:10px}
+.cimg{width:56px;height:56px;border-radius:14px;background:var(--soft);display:grid;place-items:center;font-size:1.6rem}
+.q{display:inline-flex;align-items:center;gap:10px;margin-top:4px}.q button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.tot{display:flex;justify-content:space-between;gap:10px;font-size:.92rem;color:var(--mut);padding:3px 0}.tot.g{font-size:1.1rem;color:var(--ink);font-weight:800}
+.pms,.cr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pm{padding:10px;border:2px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font-weight:600;font-size:.88rem}
+.pm[aria-pressed=true]{border-color:var(--pri);background:var(--soft)}
+#pcard{display:grid;gap:12px}#pcard[hidden]{display:none}
+.box .btn.ap,.box .btn.gp{background:#000;color:#fff;border:1px solid #555}.box .btn.pp{background:#ffc439;color:#111}
+.box .btn:disabled,.btn:disabled{opacity:.6;cursor:default}
+.wn{font-size:.85rem;color:var(--mut);background:var(--soft);border-radius:10px;padding:10px 12px;margin:0}
+footer{padding:28px 0;text-align:center;color:var(--mut);font-size:.88rem;border-top:1px solid var(--line)}
+@media(max-width:800px){.hero .wrap,.two,.demo{grid-template-columns:1fr}.hero{padding-top:36px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+<a class="logo" href="#inicio">Nidoo</a>
+<ul><li><a href="#objetivo">Objetivo</a></li><li><a href="#publico">Público</a></li><li><a href="#funcional">Producto</a></li><li><a href="#demo">Prueba el Hub</a></li><li><a href="#comprar">Comprar</a></li><li><a href="#contacto">Contacto</a></li></ul>
+<button class="chip" id="cb" type="button" aria-label="Abrir carrito">🛒 Carrito<span class="bdg" id="cbn" hidden>0</span></button>
+<div class="acc" id="nb" aria-label="Acceso opcional a la cuenta"><button class="chip" id="bl" type="button" aria-haspopup="dialog" aria-controls="auth">Iniciar sesión</button><button class="chip pri" id="br" type="button" aria-haspopup="dialog" aria-controls="auth">Registrarse</button></div>
+<div class="acc" id="nu" hidden><span class="who" id="who"></span><button class="chip" id="out" type="button">Salir</button></div>
+</nav></div></header>
+<main>
+<div class="hero" id="inicio"><div class="wrap">
+<div>
+<span class="tag">Dispositivo IoT para el hogar</span>
+<h1>Un hogar más cómodo, conectado y fácil de controlar</h1>
+<p>Nidoo Hub te permite controlar luces, enchufes y sensores de tu casa desde el móvil, estés donde estés.</p>
+<a class="btn" href="#demo">Probar la demo</a><a class="btn sec" href="#funcional">Ver características</a>
+</div>
+<svg class="ill" viewBox="0 0 400 280" role="img" aria-label="Dispositivo Nidoo Hub"><rect x="130" y="100" width="140" height="90" rx="22" fill="var(--pri)"/><circle cx="200" cy="145" r="14" fill="#fff" opacity=".9"/><circle cx="200" cy="145" r="6" fill="var(--on)"/><g fill="none" stroke="var(--pri2)" stroke-width="3" stroke-linecap="round" opacity=".6"><path d="M170 80q30-24 60 0"/><path d="M155 62q45-38 90 0"/></g><text x="200" y="225" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">Nidoo Hub</text></svg>
+</div></div>
+
+<section id="objetivo"><div class="wrap">
+<h2>1. Objetivo</h2>
+<p class="lead">El objetivo de nuestra empresa es ofrecer un dispositivo IoT para el hogar que permita controlar diferentes elementos de la casa de forma sencilla desde el móvil. Buscamos combinar tecnología, comodidad y seguridad para que los usuarios puedan automatizar tareas y controlar su hogar desde cualquier lugar.</p>
+</div></section>
+
+<section id="publico" class="alt"><div class="wrap">
+<h2>2. A quién va dirigido</h2>
+<p class="lead">Nuestro producto está dirigido principalmente a jóvenes y adultos que quieran convertir su casa en un hogar inteligente. También está pensado para personas que buscan ahorrar energía, mejorar la seguridad y controlar sus dispositivos de forma cómoda desde el móvil.</p>
+</div></section>
+
+<section id="funcional"><div class="wrap">
+<h2>3. Análisis funcional</h2>
+<div class="two">
+<p class="lead">El dispositivo IoT Nidoo Hub permite controlar diferentes dispositivos inteligentes del hogar mediante una aplicación móvil. Se conecta a Internet mediante Wi-Fi y puede comunicarse con otros dispositivos. El usuario puede encender y apagar luces, controlar enchufes, consultar sensores de temperatura y recibir avisos en el móvil. También permite crear automatizaciones para que algunas acciones se realicen de forma automática.</p>
+<svg class="ill" viewBox="0 0 400 260" role="img" aria-label="El Hub conectado a bombilla, enchufe, sensor de temperatura y móvil"><g stroke="var(--pri2)" stroke-width="2" stroke-dasharray="5 5" opacity=".6"><path d="M200 130L70 60M200 130L330 60M200 130L70 200M200 130L330 200"/></g><rect x="160" y="105" width="80" height="50" rx="12" fill="var(--pri)"/><circle cx="200" cy="130" r="6" fill="#fff"/><g font-size="30" text-anchor="middle"><text x="70" y="72">💡</text><text x="330" y="72">🔌</text><text x="70" y="212">🌡️</text><text x="330" y="212">📱</text></g><g font-size="12" text-anchor="middle" fill="var(--mut)"><text x="70" y="98">Bombilla</text><text x="330" y="98">Enchufe</text><text x="70" y="238">Sensor</text><text x="330" y="238">Móvil</text></g></svg>
+</div>
+<div class="grid">
+<div class="card"><h3>Conexión</h3><ul><li>Wi-Fi</li><li>Bluetooth</li><li>Conexión con la aplicación móvil</li></ul></div>
+<div class="card"><h3>Funciones principales</h3><ul><li>Controlar luces y enchufes</li><li>Consultar la temperatura</li><li>Recibir notificaciones</li><li>Crear automatizaciones</li><li>Controlar dispositivos desde el móvil</li></ul></div>
+<div class="card"><h3>Alimentación</h3><ul><li>Conexión a la corriente eléctrica</li><li>Bajo consumo</li></ul></div>
+<div class="card"><h3>Características físicas</h3><ul><li>Diseño compacto</li><li>Fácil de instalar</li><li>Ligero</li><li>Moderno</li></ul></div>
+</div>
+<div class="result">Resultado: un hogar más cómodo, conectado y fácil de controlar</div>
+</div></section>
+
+<section id="demo" class="alt"><div class="wrap">
+<h2>Prueba el Hub</h2>
+<p class="lead">Simulación de la app móvil: enciende y apaga dispositivos, cambia la temperatura del salón y lanza automatizaciones. Tu configuración se guarda en este navegador.</p>
+<p class="lead"><strong>Acceso opcional:</strong> puedes probar el Hub sin iniciar sesión. Si quieres, utiliza los botones «Iniciar sesión» o «Registrarse» de la barra superior para acceder a tu cuenta.</p>
+<div class="demo">
+<div class="panel">
+<div class="status"><span class="dot"></span>Hub conectado · Wi-Fi</div>
+<div class="tiles" id="tiles"></div>
+<form id="df" class="rf" style="margin-top:12px" novalidate><input id="dn" type="text" placeholder="Nuevo dispositivo (p. ej. Luz dormitorio)" maxlength="30"><select id="dk"><option value="l">Luz</option><option value="p">Enchufe</option></select><button class="chip" type="submit">Añadir</button></form>
+<div class="temp" id="temp">
+<div>Salón · sensor de temperatura</div>
+<div class="v"><span id="tv">22.5</span> °C</div>
+<input type="range" id="ts" min="16" max="34" step="0.5" value="22.5" aria-label="Simular temperatura del salón">
+<small>Mueve el control para simular el sensor</small>
+</div>
+</div>
+<div class="panel">
+<h3>Automatizaciones</h3>
+<div class="row">
+<button class="chip" data-scene="noche">🌙 Buenas noches</button>
+<button class="chip" data-scene="llegar">🏠 Llegar a casa</button>
+<button class="chip" data-scene="salir">🚪 Salir de casa</button>
+</div>
+<label class="sw"><span>Avisarme si hace más de 27 °C</span><input type="checkbox" id="aviso" checked></label>
+<h3 style="margin-top:16px">Crear automatización</h3>
+<form id="rf" class="rf" novalidate>
+<select id="rt"><option value="temp">Si la temperatura supera (°C)</option><option value="time">A la hora</option></select>
+<input id="rv" type="number" step="0.5" value="26" aria-label="Valor">
+<select id="ra"><option value="1">Encender</option><option value="0">Apagar</option></select>
+<select id="rd" aria-label="Dispositivo"></select>
+<button class="chip" type="submit">Añadir</button>
+</form>
+<ul class="rl" id="rl"></ul>
+<h3 style="margin-top:16px">Consumo</h3>
+<div class="stat"><span>Dispositivos encendidos</span><b id="n">0</b></div>
+<div class="stat"><span>Potencia estimada</span><b id="w">0 W</b></div>
+<h3 style="margin-top:16px">Actividad</h3>
+<ul id="log"></ul>
+<button class="btn sec" id="reset" style="margin-top:12px">Restablecer demo</button>
+</div>
+</div>
+</div></section>
+
+<section id="comprar"><div class="wrap">
+<h2>Compra tu Nidoo Hub</h2>
+<p class="lead">Lleva el control de tu casa a tu bolsillo. Un único dispositivo, listo para conectar a tu Wi-Fi.</p>
+<div class="two buy" style="margin-top:24px">
+<svg class="ill" viewBox="0 0 400 280" role="img" aria-label="Dispositivo Nidoo Hub"><rect x="130" y="100" width="140" height="90" rx="22" fill="var(--pri)"/><circle cx="200" cy="145" r="14" fill="#fff" opacity=".9"/><circle cx="200" cy="145" r="6" fill="var(--on)"/><g fill="none" stroke="var(--pri2)" stroke-width="3" stroke-linecap="round" opacity=".6"><path d="M170 80q30-24 60 0"/><path d="M155 62q45-38 90 0"/></g><text x="200" y="225" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">Nidoo Hub</text></svg>
+<div class="panel">
+<h3>Nidoo Hub</h3>
+<div class="price">150 €</div><small class="who">IVA incluido · Envío gratis</small>
+<ul><li>Control de luces, enchufes y sensores</li><li>Wi-Fi y Bluetooth</li><li>Automatizaciones desde el móvil</li><li>Fácil de instalar, bajo consumo</li></ul>
+<button class="btn" id="add" type="button">Añadir al carrito</button><button class="btn sec" id="now" type="button">Comprar ahora</button>
+<p class="who" style="margin:12px 0 0">Pago con tarjeta, Apple Pay, Google Pay o PayPal.</p>
+</div></div>
+</div></section>
+
+<section id="contacto" class="alt"><div class="wrap">
+<h2>4. Contacto</h2>
+<p class="lead">Nuestra empresa se llama <strong>Nidoo</strong>. ¿Quieres más información sobre el Hub? Escríbenos.</p>
+<form id="form" novalidate>
+<div><label for="nom">Nombre</label><input type="text" id="nom"><div class="err" id="e1"></div></div>
+<div><label for="mail">Correo electrónico</label><input type="email" id="mail"><div class="err" id="e2"></div></div>
+<div><label for="msg">Mensaje</label><textarea id="msg" rows="4"></textarea><div class="err" id="e3"></div></div>
+<div><button class="btn" type="submit">Enviar mensaje</button></div>
+</form>
+<h3 style="margin-top:30px">Mensajes enviados</h3>
+<ul class="rl" id="ml"></ul>
+<p class="lead" style="margin-top:34px">Proyecto Aplicaciones Web S+P (IoT) · Grupo B</p>
+<div class="team"><span>David Montesdeoca</span><span>Adam Aazouz</span><span>Victor Carretero</span><span>Fernando Peralta</span></div>
+</div></section>
+</main>
+<footer>© Nidoo · Proyecto Aplicaciones Web S+P (IoT), Grupo B</footer>
+<div id="auth" hidden role="dialog" aria-modal="true" aria-labelledby="at"><div class="box">
+<h2 id="at">Crear cuenta</h2>
+<p id="as">Escribe tu nombre y tu correo de Gmail.</p>
+<form id="aform" novalidate>
+<div id="g0"><label for="an">Nombre</label><input type="text" id="an" autocomplete="name" maxlength="40"></div>
+<div><label for="ae">Gmail</label><input type="email" id="ae" placeholder="tunombre@gmail.com" autocomplete="email"></div>
+<div id="g1"><label for="ap" id="lp">Contraseña</label><input type="password" id="ap" autocomplete="new-password"></div>
+<div id="g2"><label for="ap2">Confirmar contraseña</label><input type="password" id="ap2" autocomplete="new-password"></div>
+<div id="gq"><label for="sq">Pregunta de seguridad (para recuperar la contraseña)</label><select id="sq"></select><input type="text" id="sa" placeholder="Tu respuesta" style="margin-top:8px" autocomplete="off"></div>
+<div id="gr"><label for="ra" id="rq">Pregunta</label><input type="text" id="ra" placeholder="Tu respuesta" autocomplete="off"></div>
+<div class="err" id="aerr" role="alert"></div>
+<button class="btn" type="submit" id="ab">Registrarme</button>
+</form>
+<div class="sw2" id="fp"><button class="lnk" id="fpb" type="button">¿Has olvidado tu contraseña?</button></div>
+<div class="sw2"><span id="aq">¿Ya tienes cuenta?</span> <button class="lnk" id="am" type="button">Inicia sesión</button></div>
+<div class="sw2"><button class="lnk" id="ac" type="button">Cerrar</button></div>
+</div></div>
+<div id="cart" hidden role="dialog" aria-modal="true" aria-labelledby="ctl"><aside class="dr">
+<h2 id="ctl" style="font-size:1.4rem">Tu carrito</h2>
+<div id="cl"></div>
+<div style="margin-top:auto;padding-top:16px"><div class="tot"><span>Envío</span><span>Gratis</span></div><div class="tot g"><span>Total (IVA incl.)</span><span id="ctt"></span></div>
+<button class="btn" id="cgo" type="button" style="width:100%">Ir al pago</button>
+<button class="btn sec" id="cx" type="button" style="width:100%">Seguir viendo</button></div>
+</aside></div>
+<div id="co" hidden role="dialog" aria-modal="true" aria-labelledby="cot"><div class="box">
+<div id="cov">
+<h2 id="cot">Finalizar compra</h2>
+<p>Modo demostración: no se realiza ningún cargo real.</p>
+<div class="tot"><span>Nidoo Hub × <b id="oq">1</b></span><span id="os"></span></div>
+<div class="tot"><span>Envío</span><span>Gratis</span></div>
+<div class="tot g"><span>Total (IVA incl.)</span><span id="ot"></span></div>
+<form id="cof" novalidate style="max-width:none">
+<div><label for="cn">Nombre completo</label><input type="text" id="cn" autocomplete="name" maxlength="60"></div>
+<div><label for="ce">Correo electrónico</label><input type="email" id="ce" autocomplete="email"></div>
+<div><label for="ca">Dirección de envío</label><input type="text" id="ca" autocomplete="street-address" maxlength="90"></div>
+<div class="cr"><div><label for="cy">Ciudad</label><input type="text" id="cy" autocomplete="address-level2" maxlength="40"></div><div><label for="cz">Código postal</label><input type="text" id="cz" inputmode="numeric" autocomplete="postal-code" maxlength="5"></div></div>
+<div><label id="pml">Método de pago</label>
+<div class="pms" role="group" aria-labelledby="pml" style="margin-top:6px"><button type="button" class="pm" data-m="card">💳 Tarjeta</button><button type="button" class="pm" data-m="ap"> Apple Pay</button><button type="button" class="pm" data-m="gp">G Pay</button><button type="button" class="pm" data-m="pp">PayPal</button></div></div>
+<div id="pcard">
+<div><label for="kn">Número de tarjeta</label><input type="text" id="kn" inputmode="numeric" autocomplete="cc-number" placeholder="4242 4242 4242 4242" maxlength="23"></div>
+<div><label for="kh">Titular</label><input type="text" id="kh" autocomplete="cc-name" maxlength="60"></div>
+<div class="cr"><div><label for="kx">Caducidad</label><input type="text" id="kx" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA" maxlength="5"></div><div><label for="kc">CVC</label><input type="text" id="kc" inputmode="numeric" autocomplete="cc-csc" maxlength="4"></div></div>
+</div>
+<p class="wn" id="pw" hidden></p>
+<div class="err" id="cerr" role="alert"></div>
+<button class="btn" type="submit" id="pay"></button>
+</form>
+<div class="sw2"><button class="lnk" id="cback" type="button">Volver al carrito</button></div>
+</div>
+<div id="cok" hidden><h2>¡Pedido confirmado! 🎉</h2><p>Te hemos enviado el resumen a <b id="okm"></b>.</p>
+<div class="tot"><span>Pedido</span><b id="oki"></b></div><div class="tot"><span>Resumen</span><span id="okt"></span></div>
+<button class="btn" id="okc" type="button">Cerrar</button></div>
+</div></div>
+<div id="toasts" aria-live="polite"></div>
+
+<script>
+const MEM={};
+function store(){try{const s=window.localStorage;s.setItem("t","1");s.removeItem("t");return s}catch(e){return{getItem:x=>x in MEM?MEM[x]:null,setItem:(x,v)=>{MEM[x]=String(v)},removeItem:x=>{delete MEM[x]}}}}
+const LS=store(),KEY="nidoo_state";
+const DEV=[{id:"ls",n:"Luz salón",i:"💡",w:9},{id:"lc",n:"Luz cocina",i:"💡",w:9},{id:"tv",n:"Enchufe TV",i:"🔌",w:90},{id:"cf",n:"Enchufe cafetera",i:"🔌",w:800}];
+const DEF={on:{ls:true,lc:false,tv:true,cf:false},temp:22.5,aviso:true,log:[],devs:DEV,rules:[],msgs:[]};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const $=id=>document.getElementById(id);
+let S=JSON.parse(JSON.stringify(DEF)),warned=false,fired={};
+try{const r=LS.getItem(KEY);if(r)Object.assign(S,JSON.parse(r))}catch(e){}
+const save=()=>{try{LS.setItem(KEY,JSON.stringify(S))}catch(e){}};
+function toast(t,w){const d=document.createElement("div");d.className="toast"+(w?" warn":"");d.textContent=t;$("toasts").append(d);setTimeout(()=>d.remove(),3500)}
+function log(t){const h=new Date().toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});S.log.unshift(h+"|"+t);S.log=S.log.slice(0,30);save();renderLog()}
+function renderLog(){$("log").innerHTML=S.log.length?S.log.map(l=>{const[h,t]=l.split("|");return`<li><time>${h}</time>${esc(t)}</li>`}).join(""):"<li>Sin actividad todavía</li>"}
+function render(){
+ $("tiles").innerHTML=S.devs.map(d=>`<button class="tile" data-id="${d.id}" aria-pressed="${!!S.on[d.id]}"><span class="x" data-del="${d.id}" title="Quitar">✕</span><span class="ic">${d.i}</span><b>${esc(d.n)}</b><small>${S.on[d.id]?"Encendido":"Apagado"}</small></button>`).join("");
+ const n=S.devs.filter(d=>S.on[d.id]);$("n").textContent=n.length;$("w").textContent=n.reduce((a,d)=>a+d.w,0)+" W";
+ $("tv").textContent=S.temp.toFixed(1);$("ts").value=S.temp;$("aviso").checked=S.aviso;
+ $("temp").classList.toggle("hot",S.temp>27);renderLog();renderX();
+}
+$("tiles").addEventListener("click",e=>{const x=e.target.closest("[data-del]");
+ if(x){const i=x.dataset.del,d=S.devs.find(v=>v.id===i);S.devs=S.devs.filter(v=>v.id!==i);delete S.on[i];S.rules=S.rules.filter(r=>r.d!==i);log(d.n+" eliminado");return render()}
+ const b=e.target.closest(".tile");if(!b)return;const id=b.dataset.id;S.on[id]=!S.on[id];const d=S.devs.find(x=>x.id===id);log(d.n+(S.on[id]?" encendido":" apagado"));render()});
+$("ts").addEventListener("input",e=>{S.temp=parseFloat(e.target.value);const hot=S.temp>27;
+ if(hot&&!warned&&S.aviso){toast("🔔 Temperatura alta en el salón: "+S.temp.toFixed(1)+" °C",true);log("Aviso: temperatura alta ("+S.temp.toFixed(1)+" °C)")}
+ warned=hot;save();render();runRules("temp")});
+$("aviso").addEventListener("change",e=>{S.aviso=e.target.checked;log("Aviso de calor "+(S.aviso?"activado":"desactivado"));render()});
+const SC={noche:["Buenas noches: todo apagado","off"],llegar:["Llegar a casa: luz del salón y TV encendidas",{ls:1,tv:1}],salir:["Salir de casa: todo apagado","off"]};
+document.querySelectorAll("[data-scene]").forEach(b=>b.onclick=()=>{const[t,c]=SC[b.dataset.scene];if(c==="off")S.devs.forEach(d=>S.on[d.id]=false);else for(const k in c)if(k in S.on)S.on[k]=!!c[k];log(t);toast("✅ "+t);render()});
+$("reset").onclick=()=>{const m=S.msgs;S=JSON.parse(JSON.stringify(DEF));S.msgs=m;fired={};warned=false;save();toast("Demo restablecida");render()};
+$("form").addEventListener("submit",e=>{e.preventDefault();let ok=true;
+ const v=(i,er,c,m)=>{const bad=!c($(i).value.trim());$(er).textContent=bad?m:"";if(bad)ok=false};
+ v("nom","e1",x=>x.length>=2,"Escribe tu nombre");
+ v("mail","e2",x=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x),"Correo no válido");
+ v("msg","e3",x=>x.length>=10,"El mensaje es demasiado corto");
+ if(ok){const n=$("nom").value.trim();S.msgs.unshift({d:new Date().toLocaleString("es-ES"),n,m:$("msg").value.trim()});save();toast("✅ Mensaje enviado. ¡Gracias, "+n+"!");e.target.reset();renderX()}});
+function renderX(){const sel=$("rd").value;
+ $("rd").innerHTML=S.devs.map(d=>`<option value="${d.id}">${esc(d.n)}</option>`).join("");if(sel)$("rd").value=sel;
+ $("rl").innerHTML=S.rules.length?S.rules.map(r=>{const d=S.devs.find(x=>x.id===r.d);return`<li><span>${r.k==="temp"?"Si supera "+r.v+" °C":"A las "+r.v} → ${r.a?"encender":"apagar"} ${esc(d?d.n:"?")}</span><button data-rdel="${r.id}" title="Quitar">✕</button></li>`}).join(""):"<li>Aún no has creado automatizaciones</li>";
+ $("ml").innerHTML=S.msgs.length?S.msgs.map((m,i)=>`<li><span><b>${esc(m.n)}</b> · ${m.d}<br>${esc(m.m)}</span><button data-mdel="${i}" title="Borrar">✕</button></li>`).join(""):"<li>Aún no has enviado mensajes</li>"}
+function runRules(k){let ch=false;const now=new Date(),hm=now.toTimeString().slice(0,5),day=now.toDateString();
+ S.rules.forEach(r=>{const d=S.devs.find(x=>x.id===r.d);if(!d)return;let go=false;
+  if(r.k==="temp"&&k==="temp"){const hot=S.temp>r.v;go=hot&&!fired[r.id];fired[r.id]=hot}
+  if(r.k==="time"&&k==="time"){go=hm===r.v&&fired[r.id]!==day+hm;if(go)fired[r.id]=day+hm}
+  if(go){S.on[d.id]=r.a;ch=true;const m="Automatización: "+d.n+(r.a?" encendido":" apagado");log(m);toast("⚙️ "+m)}});
+ if(ch){save();render()}}
+setInterval(()=>runRules("time"),15000);
+$("rt").onchange=()=>{const t=$("rt").value==="time";$("rv").type=t?"time":"number";$("rv").value=t?"22:00":"26"};
+$("rf").addEventListener("submit",e=>{e.preventDefault();const k=$("rt").value,v=$("rv").value;if(!v||!$("rd").value)return toast("Completa la automatización");
+ S.rules.push({id:"r"+Date.now(),k,v:k==="temp"?parseFloat(v):v,a:$("ra").value==="1",d:$("rd").value});log("Automatización creada");toast("✅ Automatización creada");render()});
+$("rl").addEventListener("click",e=>{const b=e.target.closest("[data-rdel]");if(!b)return;S.rules=S.rules.filter(r=>r.id!==b.dataset.rdel);log("Automatización eliminada");render()});
+$("ml").addEventListener("click",e=>{const b=e.target.closest("[data-mdel]");if(!b)return;S.msgs.splice(+b.dataset.mdel,1);save();renderX()});
+$("df").addEventListener("submit",e=>{e.preventDefault();const n=$("dn").value.trim();if(!n)return toast("Escribe un nombre");
+ const l=$("dk").value==="l",id="d"+Date.now();S.devs.push({id,n,i:l?"💡":"🔌",w:l?9:100});S.on[id]=false;$("dn").value="";log(n+" añadido");toast("✅ "+n+" añadido");render()});
+// cuenta opcional (nombre + Gmail)
+const U=()=>{try{return JSON.parse(LS.getItem("nidoo_users")||"{}")}catch(e){return{}}};
+let mode="reg";
+const QS=["¿Cómo se llamaba tu primera mascota?","¿En qué ciudad naciste?","¿Cuál es tu comida favorita?","¿Cómo se llama tu mejor amigo de la infancia?","¿Cuál fue tu primer colegio?"];
+$("sq").innerHTML=QS.map(q=>`<option>${q}</option>`).join("");
+function setMode(m){mode=m;const r=m==="reg",l=m==="log",s1=m==="rec",s2=m==="rec2",sh=(i,v)=>{$(i).style.display=v?"":"none"};
+ const T={reg:["Crear cuenta","Escribe tu nombre, tu correo de Gmail y una contraseña."],log:["Iniciar sesión","Escribe tu nombre, tu Gmail y tu contraseña."],rec:["Recuperar contraseña","Escribe el Gmail de tu cuenta."],rec2:["Recuperar contraseña","Responde a tu pregunta de seguridad y elige una contraseña nueva."]}[m];
+ $("at").textContent=T[0];$("as").textContent=T[1];
+ sh("g0",r||l);sh("g1",r||l||s2);sh("g2",r||s2);sh("gq",r);sh("gr",s2);sh("fp",l);
+ $("ae").readOnly=s2;$("lp").textContent=s2?"Nueva contraseña":"Contraseña";
+ $("ab").textContent=r?"Registrarme":l?"Entrar":s1?"Continuar":"Cambiar contraseña";
+ $("aq").textContent=r?"¿Ya tienes cuenta?":l?"¿Aún no tienes cuenta?":"¿Te acuerdas?";$("am").textContent=r?"Inicia sesión":l?"Regístrate":"Volver a entrar";
+ $("ap").autocomplete=l?"current-password":"new-password";$("aerr").textContent=""}
+function openAuth(m){setMode(m);$("aform").reset();$("auth").hidden=false;$("an").focus()}
+function closeAuth(){$("auth").hidden=true}
+function showUser(u){const on=!!u;$("nb").hidden=on;$("nu").hidden=!on;
+ if(on){$("who").textContent=u.n;$("nom").value=u.n;$("mail").value=u.e}}
+function enter(u){try{LS.setItem("nidoo_sess",u.e)}catch(e){}showUser(u)}
+$("bl").onclick=()=>openAuth("log");$("br").onclick=()=>openAuth("reg");
+$("am").onclick=()=>setMode(mode==="log"?"reg":"log");
+$("fpb").onclick=()=>setMode("rec");
+$("ac").onclick=closeAuth;
+$("auth").addEventListener("click",e=>{if(e.target.id==="auth")closeAuth()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAuth()});
+$("out").onclick=()=>{try{LS.removeItem("nidoo_sess")}catch(e){}showUser(null);toast("Sesión cerrada")};
+async function hash(p,salt){const d=salt+p;try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(d));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){let h=5381;for(const c of d)h=((h<<5)+h+c.charCodeAt(0))>>>0;return"f"+h}}
+const newSalt=()=>Math.random().toString(36).slice(2);
+async function recover(em,pw,err){
+ if(!/^[^@\s]+@gmail\.com$/.test(em))return err("Escribe un correo de Gmail válido (termina en @gmail.com)");
+ const us=U(),u=us[em];
+ try{
+ if(mode==="rec"){
+  if(!u)return err("No hay ninguna cuenta con ese Gmail");
+  if(!u.q)return err("Esa cuenta no tiene pregunta de seguridad, así que no se puede recuperar. Crea una cuenta nueva con otro Gmail");
+  setMode("rec2");$("rq").textContent=u.q;return}
+ const ans=$("ra").value.trim().toLowerCase();
+ if(!ans||u.a!==await hash(ans,"q"+em))return err("La respuesta no es correcta");
+ if(pw.length<6)return err("La nueva contraseña debe tener al menos 6 caracteres");
+ if(pw!==$("ap2").value)return err("Las contraseñas no coinciden");
+ const salt=newSalt();u.salt=salt;u.h=await hash(pw,salt);us[em]=u;
+ try{LS.setItem("nidoo_users",JSON.stringify(us))}catch(x){return err("No se pudo guardar la nueva contraseña")}
+ setMode("log");$("ap").value="";$("ra").value="";toast("✅ Contraseña cambiada. Ya puedes entrar")
+ }catch(x){err("Error inesperado: "+x.message)}}
+$("aform").addEventListener("submit",async e=>{e.preventDefault();
+ const n=$("an").value.trim(),em=$("ae").value.trim().toLowerCase(),pw=$("ap").value,err=t=>{$("aerr").textContent=t};
+ if(mode==="rec"||mode==="rec2")return recover(em,pw,err);
+ if(n.length<2)return err("Escribe tu nombre");
+ if(!/^[^@\s]+@gmail\.com$/.test(em))return err("Escribe un correo de Gmail válido (termina en @gmail.com)");
+ if(pw.length<6)return err("La contraseña debe tener al menos 6 caracteres");
+ const us=U(),saveUs=()=>{try{LS.setItem("nidoo_users",JSON.stringify(us));return true}catch(x){return false}};
+ try{
+ if(mode==="reg"){
+  if(pw!==$("ap2").value)return err("Las contraseñas no coinciden");
+  if(us[em])return err("Ese Gmail ya está registrado. Inicia sesión");
+  const sa=$("sa").value.trim().toLowerCase();if(sa.length<2)return err("Escribe la respuesta a la pregunta de seguridad");
+  const salt=newSalt();us[em]={n,e:em,salt,h:await hash(pw,salt),q:$("sq").value,a:await hash(sa,"q"+em)};
+  if(!saveUs())return err("No se puede guardar la cuenta en este navegador");
+  closeAuth();enter(us[em]);toast("✅ Cuenta creada. ¡Bienvenido, "+n+"!");
+ }else{
+  const u=us[em];
+  if(!u)return err("No hay ninguna cuenta con ese Gmail. Regístrate primero");
+  if(u.n.toLowerCase()!==n.toLowerCase())return err("El nombre no coincide con esa cuenta");
+  if(u.h){if(u.h!==await hash(pw,u.salt))return err("Contraseña incorrecta")}
+  else{const salt=newSalt();u.salt=salt;u.h=await hash(pw,salt);saveUs();toast("Cuenta antigua: la contraseña que has escrito ya queda guardada")}
+  closeAuth();enter(u);toast("✅ Hola de nuevo, "+u.n)}
+ }catch(x){err("Error inesperado: "+x.message)}
+});
+try{const s=LS.getItem("nidoo_sess"),u=s&&U()[s];if(u)showUser(u)}catch(e){}
+render();runRules("time");
+// carrito + pago (simulado)
+const PR=150,CK="nidoo_cart",eur=n=>n.toLocaleString("es-ES",{style:"currency",currency:"EUR"});
+const NM={card:"",ap:"con Apple Pay",gp:"con Google Pay",pp:"con PayPal"};
+const WN={ap:"Se abrirá la hoja de pago de Apple Pay (simulada en esta demo).",gp:"Se abrirá la ventana de Google Pay (simulada en esta demo).",pp:"Te llevaríamos a PayPal para iniciar sesión y confirmar el pago (simulado en esta demo)."};
+let Q=0,PM="card",busy=false;
+try{Q=Math.min(10,Math.max(0,parseInt(LS.getItem(CK))||0))}catch(e){}
+const show=(i,v)=>{$(i).hidden=!v};
+function setQ(n){Q=Math.max(0,Math.min(10,n));try{LS.setItem(CK,Q)}catch(e){}renderC()}
+function renderC(){
+ $("cbn").textContent=Q;$("cbn").hidden=!Q;
+ $("cl").innerHTML=Q?`<div class="ci"><div class="cimg">📡</div><div><b>Nidoo Hub</b><br><small>${eur(PR)} / ud.</small><div class="q"><button type="button" data-q="-1" aria-label="Quitar una unidad">−</button><span>${Q}</span><button type="button" data-q="1" aria-label="Añadir una unidad">+</button></div></div><div style="text-align:right"><b>${eur(Q*PR)}</b><br><button class="lnk" type="button" data-q="-99">Quitar</button></div></div>`:'<p class="lead">Tu carrito está vacío.</p>';
+ const t=eur(Q*PR);$("ctt").textContent=t;$("ot").textContent=t;$("os").textContent=t;$("oq").textContent=Q;$("cgo").disabled=!Q;updPay()}
+function updPay(){document.querySelectorAll(".pm").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===PM));
+ show("pcard",PM==="card");show("pw",PM!=="card");$("pw").textContent=WN[PM]||"";
+ const b=$("pay");b.className="btn "+(PM==="card"?"":PM);b.textContent="Pagar "+(NM[PM]?NM[PM]+" · ":"")+eur(Q*PR)}
+function openCo(){if(!Q)return toast("Tu carrito está vacío",true);show("cart",false);show("cov",true);show("cok",false);
+ if(!$("cn").value&&$("who").textContent){$("cn").value=$("nom").value;$("ce").value=$("mail").value}
+ $("cerr").textContent="";show("co",true);$("cn").focus()}
+$("cb").onclick=()=>show("cart",true);
+$("cx").onclick=()=>show("cart",false);
+$("cart").addEventListener("click",e=>{if(e.target.id==="cart")show("cart",false);const b=e.target.closest("[data-q]");if(b)setQ(Q+ +b.dataset.q)});
+$("add").onclick=()=>{setQ(Q+1);toast("🛒 Nidoo Hub añadido al carrito")};
+$("now").onclick=()=>{if(!Q)setQ(1);openCo()};
+$("cgo").onclick=openCo;
+$("cback").onclick=()=>{show("co",false);show("cart",true)};
+$("okc").onclick=()=>show("co",false);
+$("co").addEventListener("click",e=>{if(e.target.id==="co"&&!busy)show("co",false)});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!busy){show("cart",false);show("co",false)}});
+document.querySelectorAll(".pm").forEach(b=>b.onclick=()=>{PM=b.dataset.m;updPay()});
+$("kn").oninput=e=>{e.target.value=e.target.value.replace(/\D/g,"").slice(0,19).replace(/(.{4})/g,"$1 ").trim()};
+$("kx").oninput=e=>{let v=e.target.value.replace(/\D/g,"").slice(0,4);if(v.length>2)v=v.slice(0,2)+"/"+v.slice(2);e.target.value=v};
+$("kc").oninput=e=>{e.target.value=e.target.value.replace(/\D/g,"")};
+const luhn=s=>{let t=0,d=false;for(let i=s.length-1;i>=0;i--){let n=+s[i];if(d){n*=2;if(n>9)n-=9}t+=n;d=!d}return t%10===0};
+$("cof").addEventListener("submit",e=>{e.preventDefault();if(busy)return;
+ const er=t=>{$("cerr").textContent=t},v=i=>$(i).value.trim();
+ if(v("cn").length<2)return er("Escribe tu nombre completo");
+ if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v("ce")))return er("Correo no válido");
+ if(v("ca").length<5)return er("Escribe tu dirección de envío");
+ if(v("cy").length<2)return er("Escribe tu ciudad");
+ if(!/^\d{5}$/.test(v("cz")))return er("El código postal debe tener 5 cifras");
+ if(PM==="card"){
+  const n=$("kn").value.replace(/\s/g,""),[mm,yy]=v("kx").split("/"),now=new Date(),m=+mm,y=2000+ +yy;
+  if(n.length<13||!luhn(n))return er("El número de tarjeta no es válido");
+  if(v("kh").length<2)return er("Escribe el titular de la tarjeta");
+  if(!(m>=1&&m<=12)||!yy||yy.length!==2||y<now.getFullYear()||(y===now.getFullYear()&&m<now.getMonth()+1))return er("La fecha de caducidad no es válida");
+  if(!/^\d{3,4}$/.test(v("kc")))return er("El CVC no es válido")}
+ er("");busy=true;$("pay").disabled=true;$("pay").textContent="Procesando pago…";
+ setTimeout(done,1600)});
+function done(){const id="NID-"+Date.now().toString(36).toUpperCase().slice(-6),tot=Q*PR;
+ try{const o=JSON.parse(LS.getItem("nidoo_orders")||"[]");o.unshift({id,q:Q,t:tot,m:PM,d:new Date().toLocaleString("es-ES")});LS.setItem("nidoo_orders",JSON.stringify(o.slice(0,20)))}catch(x){}
+ $("oki").textContent=id;$("okt").textContent=Q+" × Nidoo Hub · "+eur(tot);$("okm").textContent=$("ce").value.trim();
+ ["kn","kh","kx","kc"].forEach(i=>$(i).value="");
+ busy=false;$("pay").disabled=false;show("cov",false);show("cok",true);setQ(0)}
+renderC();
+</script>
+</body>
+</html>
